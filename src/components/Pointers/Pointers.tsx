@@ -32,7 +32,6 @@ function Pointers({ pointers }: PointersProps) {
               targetY={pointer.y}
               targetZ={pointer.z}
               position={pointer.position}
-              offset={i * 22}
             />
           )
         })
