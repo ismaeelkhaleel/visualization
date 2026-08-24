@@ -8,56 +8,64 @@ type Platform3DProps = {
   children?: React.ReactNode
 }
 
-export const Platform3D: React.FC<Platform3DProps> = ({ width, depth, thickness = 10, elevation = 0, children }) => {
+export const Platform3D: React.FC<Platform3DProps> = ({ width, depth, thickness = 20, elevation = 0, children }) => {
   return (
     <div style={{
       position: 'absolute',
       width: `${width}px`,
       height: '0px',
       transformStyle: 'preserve-3d',
-      transform: `translateZ(${elevation}px)`,
+      transform: `translateZ(${elevation}px) translateX(-50%)`, // Centered horizontally
+      left: '50%',
+      bottom: '0px', // Anchored at bottom
     }}>
       {/* Contact Shadow on the ground layer */}
       <div style={{
         position: 'absolute',
+        bottom: '0px',
+        left: 0,
         width: `${width}px`,
         height: `${depth}px`,
         background: 'rgba(0,0,0,0.8)',
-        transformOrigin: 'top',
-        transform: `translateY(${-depth/2}px) translateZ(${-thickness - 4}px)`,
-        filter: `blur(${Math.max(8, elevation * 0.5 + 8)}px)`,
+        transformOrigin: 'bottom',
+        transform: `translateZ(${-thickness - 4}px) rotateX(90deg)`,
+        filter: `blur(${Math.max(8, elevation * 0.5 + 12)}px)`,
         borderRadius: '8px'
       }} />
 
-      {/* Top Face */}
+      {/* Top Face (The Floor) */}
       <div style={{
         position: 'absolute',
+        bottom: 0,
+        left: 0,
         width: `${width}px`,
         height: `${depth}px`,
-        background: `linear-gradient(to bottom, #232328 0%, #1a1a1f 100%)`,
-        border: `1px solid #333338`,
-        transformOrigin: 'top',
-        transform: `translateY(${-depth/2}px) rotateX(90deg)`,
+        background: `linear-gradient(to bottom, #2a2a30 0%, #1e1e24 100%)`,
+        border: `1px solid #3d3d45`,
+        borderBottom: 'none',
+        transformOrigin: 'bottom',
+        transform: `rotateX(90deg)`,
         boxSizing: 'border-box',
-        borderRadius: '4px'
       }}>
         {/* Top edge highlight */}
         <div style={{
-          position: 'absolute', top: 0, left: 0, width: '100%', height: '2px',
-          background: 'rgba(255,255,255,0.1)'
+          position: 'absolute', bottom: 0, left: 0, width: '100%', height: '2px',
+          background: 'rgba(255,255,255,0.15)'
         }} />
       </div>
 
       {/* Front Face */}
       <div style={{
         position: 'absolute',
+        top: 0, // Starts at the bottom edge (Y=0 relative to parent height:0)
+        left: 0,
         width: `${width}px`,
         height: `${thickness}px`,
-        background: `linear-gradient(135deg, #18181b 0%, #111113 150%)`,
+        background: `linear-gradient(135deg, #1f1f25 0%, #111114 150%)`,
         border: `1px solid #2a2a2e`,
         borderTop: 'none',
         transformOrigin: 'top',
-        transform: `translateY(${depth/2}px) translateZ(0px)`,
+        transform: `translateZ(0px)`,
         boxSizing: 'border-box',
         borderBottomLeftRadius: '4px',
         borderBottomRightRadius: '4px'
@@ -66,31 +74,39 @@ export const Platform3D: React.FC<Platform3DProps> = ({ width, depth, thickness 
       {/* Left Face */}
       <div style={{
         position: 'absolute',
+        top: 0,
+        left: 0,
         width: `${depth}px`,
         height: `${thickness}px`,
-        background: '#111113',
+        background: '#151518',
         transformOrigin: 'left top',
-        transform: `translateY(${-depth/2}px) rotateY(-90deg)`,
-        border: `1px solid rgba(0,0,0,0.5)`,
+        transform: `rotateY(-90deg)`,
+        border: `1px solid rgba(0,0,0,0.6)`,
+        borderRight: 'none',
         boxSizing: 'border-box',
       }} />
 
       {/* Right Face */}
       <div style={{
         position: 'absolute',
+        top: 0,
+        left: '100%',
         width: `${depth}px`,
         height: `${thickness}px`,
         background: '#111113',
-        transformOrigin: 'right top',
-        transform: `translateX(${width - depth}px) translateY(${-depth/2}px) rotateY(90deg)`,
-        border: `1px solid rgba(0,0,0,0.5)`,
+        transformOrigin: 'left top',
+        transform: `rotateY(-90deg)`,
+        border: `1px solid rgba(0,0,0,0.8)`,
+        borderLeft: 'none',
         boxSizing: 'border-box',
       }} />
 
       {/* Content wrapper */}
       <div style={{
         position: 'absolute',
-        width: `${width}px`,
+        bottom: 0,
+        left: 0,
+        width: '100%',
         height: '0px',
         transformStyle: 'preserve-3d',
       }}>

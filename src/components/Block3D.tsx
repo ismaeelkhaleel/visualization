@@ -25,20 +25,23 @@ export const Block3D = React.forwardRef<HTMLDivElement, Block3DProps>(({ width, 
       transform: `translateZ(${elevation}px)`,
       transition: 'transform 0.5s cubic-bezier(0.34,1.56,0.64,1)',
     }}>
-      {/* Contact Shadow on the back plane (Z = -depth) */}
+      {/* Contact Shadow on the Platform (Z = -depth) */}
       <div style={{
         position: 'absolute',
+        bottom: '0px',
         width: `${width}px`,
-        height: `${height}px`,
-        background: 'rgba(0,0,0,0.6)',
-        transform: `translateZ(${-depth - 2}px) translateY(4px)`,
-        filter: `blur(${Math.max(4, elevation * 0.4)}px)`,
+        height: `${depth}px`,
+        background: 'rgba(0,0,0,0.85)',
+        transformOrigin: 'bottom',
+        transform: `translateZ(${-depth}px) rotateX(90deg)`,
+        filter: `blur(${Math.max(4, elevation * 0.5 + 4)}px)`,
         transition: 'filter 0.5s ease',
       }}></div>
       
       {/* Top Face */}
       <div style={{
         position: 'absolute',
+        top: 0,
         width: `${width}px`,
         height: `${depth}px`,
         background: `linear-gradient(to bottom, ${s.top} 0%, ${s.side} 100%)`,
@@ -48,69 +51,69 @@ export const Block3D = React.forwardRef<HTMLDivElement, Block3DProps>(({ width, 
         transform: `rotateX(90deg)`,
         boxSizing: 'border-box'
       }}>
-        {/* Top edge highlight */}
+        {/* Top bevel highlight */}
         <div style={{
-          position: 'absolute', top: 0, left: 0, width: '100%', height: '20%',
-          background: 'rgba(255,255,255,0.2)'
+          position: 'absolute', top: 0, left: 0, width: '100%', height: '3px',
+          background: 'rgba(255,255,255,0.25)'
         }} />
       </div>
       
-      {/* Front Face (Y = height) */}
+      {/* Front Face */}
       <div style={{
         position: 'absolute',
+        top: 0,
         width: `${width}px`,
         height: `${height}px`,
         background: `linear-gradient(135deg, ${s.front} 0%, ${s.side} 150%)`,
         border: `1px solid ${s.border}`,
-        boxShadow: `inset 0 1px 1px rgba(255,255,255,0.2), inset 0 -1px 2px rgba(0,0,0,0.3)${s.glow !== 'transparent' ? `, 0 0 15px ${s.glow}` : ''}`,
+        boxShadow: `inset 0 1px 2px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.4)${s.glow !== 'transparent' ? `, 0 0 20px ${s.glow}` : ''}`,
         transform: `translateZ(0px)`,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         color: s.text,
-        fontSize: Math.min(width, height) * 0.4 + 'px',
-        fontWeight: 800,
-        boxSizing: 'border-box'
+        fontSize: Math.min(width, height) * 0.45 + 'px',
+        fontWeight: 900,
+        boxSizing: 'border-box',
+        textShadow: '0 2px 4px rgba(0,0,0,0.5)'
       }}>
+        {/* Specular Glint */}
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'linear-gradient(105deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.1) 45%, rgba(255,255,255,0) 60%)',
+          pointerEvents: 'none'
+        }} />
         {text}
       </div>
       
-      {/* Left Face (X = 0) */}
+      {/* Left Face */}
       <div style={{
         position: 'absolute',
+        top: 0,
         width: `${depth}px`,
         height: `${height}px`,
-        background: s.side,
+        background: `linear-gradient(to bottom, ${s.side} 0%, #000 150%)`,
         transformOrigin: 'left',
         transform: `rotateY(-90deg)`,
-        border: `1px solid rgba(0,0,0,0.5)`,
+        border: `1px solid rgba(0,0,0,0.6)`,
         borderRight: 'none',
         boxSizing: 'border-box'
       }}></div>
       
-      {/* Right Face (X = width) */}
+      {/* Right Face */}
       <div style={{
         position: 'absolute',
+        top: 0,
         width: `${depth}px`,
         height: `${height}px`,
-        background: s.side,
+        background: `linear-gradient(to bottom, ${s.side} 0%, #000 150%)`,
         transformOrigin: 'right',
         transform: `translateX(${width - depth}px) rotateY(90deg)`,
-        border: `1px solid rgba(0,0,0,0.5)`,
+        border: `1px solid rgba(0,0,0,0.6)`,
         borderLeft: 'none',
         boxSizing: 'border-box'
       }}></div>
 
-      {/* Bottom Face */}
-      <div style={{
-        position: 'absolute',
-        width: `${width}px`,
-        height: `${depth}px`,
-        background: '#000',
-        transformOrigin: 'bottom',
-        transform: `translateY(${height - depth}px) rotateX(-90deg)`,
-        boxSizing: 'border-box'
-      }}></div>
     </div>
   )
 })

@@ -117,7 +117,8 @@ function LinkedList({ nodes, headId, pointers = [], highlights = [], visualizati
                 background: `linear-gradient(90deg, ${color} 0%, ${color} 80%, transparent 100%)`,
                 transformOrigin: 'left center',
                 boxShadow: isHighlighted ? `0 0 10px ${surfaces.active.glow}` : '0 2px 4px rgba(0,0,0,0.5)',
-                borderRadius: '1.5px'
+                borderRadius: '1.5px',
+                transition: 'transform 0.5s ease-in-out, width 0.5s ease-in-out, background 0.5s ease-in-out'
               }}>
                 {/* Arrowhead */}
                 <div style={{

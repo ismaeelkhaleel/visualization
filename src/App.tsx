@@ -489,31 +489,6 @@ function App() {
       >
         {/* Title moved outside */}
         <div
-          ref={titleRef}
-          style={{
-            color: '#f5f5f5',
-            fontSize: '20px',
-            fontWeight: 700,
-            letterSpacing: '1.5px',
-            textAlign: 'center',
-            marginBottom: '8px',
-          }}
-        >
-          {visualization.title}
-        </div>
-
-        <div
-          style={{
-            color: '#666',
-            fontSize: '10px',
-            letterSpacing: '0.8px',
-            textTransform: 'uppercase',
-          }}
-        >
-          360 × 640 Preview
-        </div>
-
-        <div
           style={{
             width: '360px',
             height: '640px',
@@ -527,12 +502,10 @@ function App() {
             flexDirection: 'column',
             alignItems: 'center',
             boxSizing: 'border-box',
-            padding: '32px 24px 28px',
+            padding: '24px',
             overflow: 'hidden',
           }}
         >
-
-
           <div
             style={{
               width: '100%',
@@ -542,9 +515,24 @@ function App() {
               alignItems: 'center',
             }}
           >
+            {/* 1. TITLE / EXPLANATION ZONE - 10% */}
+            <div style={{
+              height: '10%',
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              color: '#f5f5f5',
+              fontSize: '18px',
+              fontWeight: 800,
+              letterSpacing: '1.5px',
+              textAlign: 'center',
+              textShadow: '0 2px 10px rgba(0,0,0,0.8)'
+            }}>
+              <span ref={titleRef}>{visualization.title}</span>
+            </div>
 
-            
-            {/* 1. VISUALIZATION ZONE - 45% */}
+            {/* 2. VISUALIZATION ZONE - 45% */}
             <div
               style={{
                 height: '45%',
@@ -559,10 +547,10 @@ function App() {
               <VisualizationRenderer step={step} visualizationKey={algorithm} viewportWidth={312} viewportHeight={261} isComplete={currentStep === currentSteps.length - 1} />
             </div>
 
-            {/* 2. STATUS ZONE - 10% */}
+            {/* 3. STATUS ZONE - 15% */}
             <div
               style={{
-                height: '10%',
+                height: '15%',
                 width: '100%',
                 display: 'flex',
                 justifyContent: 'center',
@@ -574,10 +562,10 @@ function App() {
               <StatusMessage message={step.message} />
             </div>
 
-            {/* 3. CODEPANEL ZONE - 45% */}
+            {/* 4. CODEPANEL ZONE - 30% */}
             <div
               style={{
-                height: '45%',
+                height: '30%',
                 width: '100%',
                 display: 'flex',
                 justifyContent: 'center',

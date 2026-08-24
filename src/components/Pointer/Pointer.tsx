@@ -22,34 +22,43 @@ function Pointer({ label, targetX, targetY, targetZ = 10, position, offset = 0 }
       firstRender.current = false
       return
     }
-    gsap.to(pointerRef.current, {
-      x: targetX, 
-      y: targetY, 
-      z: targetZ,
-      duration: theme.animation.durationMedium,
-      ease: 'power3.out',
+    // Physical motion: lifts slightly, moves, then drops to target
+    const tl = gsap.timeline()
+    tl.to(pointerRef.current, {
+      z: targetZ + 30, // lift up
+      duration: 0.2,
+      ease: 'power2.out'
+    }).to(pointerRef.current, {
+      x: targetX,
+      y: targetY,
+      duration: 0.4,
+      ease: 'power2.inOut'
+    }, "-=0.1").to(pointerRef.current, {
+      z: targetZ, // settle down
+      duration: 0.2,
+      ease: 'back.out(1.5)'
     })
   }, [targetX, targetY, targetZ])
 
-  // Map label to a specific color palette for variety (curr=yellow, prev=blue, etc.)
+  // Semantic color mapping
   const getPalette = (text: string) => {
     const t = text.toLowerCase()
-    if (t.includes('curr') || t.includes('mid')) return { glow: 'rgba(234, 179, 8, 0.8)', core: '#eab308' } // yellow
-    if (t.includes('prev') || t.includes('left') || t === 'l') return { glow: 'rgba(56, 189, 248, 0.8)', core: '#38bdf8' } // cyan
-    if (t.includes('next') || t.includes('right') || t === 'r') return { glow: 'rgba(167, 139, 250, 0.8)', core: '#a78bfa' } // purple
-    return { glow: 'rgba(248, 113, 113, 0.8)', core: '#f87171' } // red/default
+    if (t.includes('curr') || t.includes('mid') || t === 'm') return { core: '#facc15', shadow: 'rgba(250,204,21,0.5)' } // yellow
+    if (t.includes('prev') || t.includes('left') || t === 'l') return { core: '#38bdf8', shadow: 'rgba(56,189,248,0.5)' } // cyan
+    if (t.includes('next') || t.includes('right') || t === 'r') return { core: '#c084fc', shadow: 'rgba(192,132,252,0.5)' } // purple
+    return { core: '#f87171', shadow: 'rgba(248,113,113,0.5)' } // red
   }
 
-  const { glow, core } = getPalette(label)
+  const { core, shadow } = getPalette(label)
   
-  // Hover animation
+  // Floating animation
   useLayoutEffect(() => {
     if (!pointerRef.current) return
     const hoverEl = pointerRef.current.querySelector('.pointer-hover')
     if (hoverEl) {
       gsap.to(hoverEl, {
-        y: -5,
-        duration: 1.5,
+        y: -4,
+        duration: 1.2,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut'
@@ -72,43 +81,40 @@ function Pointer({ label, targetX, targetY, targetZ = 10, position, offset = 0 }
         
         {position === 'top' && (
           <div style={{ position: 'absolute', bottom: '0px', left: 0, transformStyle: 'preserve-3d' }}>
-            {/* The Light Beam */}
-            <div style={{
-              position: 'absolute',
-              bottom: '0px',
-              left: '-12px',
-              width: '24px',
-              height: `${25 + offset}px`,
-              background: `linear-gradient(to bottom, transparent 0%, ${glow} 100%)`,
-              clipPath: 'polygon(50% 100%, 0% 0%, 100% 0%)',
-              opacity: 0.6,
-              transformOrigin: 'bottom',
-              transform: 'rotateX(-15deg)'
-            }} />
             
-            {/* The 3D Source Object (Sphere/Diamond) */}
-            <div style={{
-              position: 'absolute',
-              bottom: `${20 + offset}px`,
-              left: '-8px',
-              width: '16px',
-              height: '16px',
-              background: `radial-gradient(circle at 30% 30%, #fff 0%, ${core} 40%, #000 100%)`,
-              borderRadius: '50%',
-              boxShadow: `0 0 15px ${glow}`,
-              transform: 'translateZ(10px)'
-            }} />
+            {/* The 3D Downward Cone/Pyramid */}
+            <svg width="24" height="24" viewBox="0 0 24 24" style={{ 
+              position: 'absolute', bottom: `${4 + offset}px`, left: '-12px',
+              filter: `drop-shadow(0 4px 6px ${shadow})`
+            }}>
+              <defs>
+                <linearGradient id={`grad-left-${label}`} x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#fff" stopOpacity="0.8"/>
+                  <stop offset="100%" stopColor={core} />
+                </linearGradient>
+                <linearGradient id={`grad-right-${label}`} x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor={core} />
+                  <stop offset="100%" stopColor="#000" stopOpacity="0.6"/>
+                </linearGradient>
+              </defs>
+              {/* Left face */}
+              <polygon points="12,24 0,4 12,8" fill={`url(#grad-left-${label})`} />
+              {/* Right face */}
+              <polygon points="12,24 12,8 24,4" fill={`url(#grad-right-${label})`} />
+              {/* Top Face */}
+              <polygon points="0,4 12,0 24,4 12,8" fill={core} />
+            </svg>
 
             {/* Label */}
             <div style={{
               position: 'absolute',
-              bottom: `${42 + offset}px`,
+              bottom: `${30 + offset}px`,
               left: 0,
               transform: 'translateX(-50%)',
-              color: core,
-              fontSize: '12px',
+              color: '#fff',
+              fontSize: '11px',
               fontWeight: 900,
-              letterSpacing: '1px',
+              letterSpacing: '0.5px',
               textShadow: '0 2px 4px rgba(0,0,0,0.8)'
             }}>
               {label}
@@ -118,41 +124,36 @@ function Pointer({ label, targetX, targetY, targetZ = 10, position, offset = 0 }
 
         {position === 'bottom' && (
           <div style={{ position: 'absolute', top: '0px', left: 0, transformStyle: 'preserve-3d' }}>
-            {/* Light Beam */}
+            <svg width="24" height="24" viewBox="0 0 24 24" style={{ 
+              position: 'absolute', top: `${4 + offset}px`, left: '-12px',
+              filter: `drop-shadow(0 -4px 6px ${shadow})`
+            }}>
+              <defs>
+                <linearGradient id={`grad-left-b-${label}`} x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#fff" stopOpacity="0.8"/>
+                  <stop offset="100%" stopColor={core} />
+                </linearGradient>
+                <linearGradient id={`grad-right-b-${label}`} x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor={core} />
+                  <stop offset="100%" stopColor="#000" stopOpacity="0.6"/>
+                </linearGradient>
+              </defs>
+              {/* Left face */}
+              <polygon points="12,0 0,20 12,16" fill={`url(#grad-left-b-${label})`} />
+              {/* Right face */}
+              <polygon points="12,0 12,16 24,20" fill={`url(#grad-right-b-${label})`} />
+              {/* Bottom Face */}
+              <polygon points="0,20 12,24 24,20 12,16" fill={core} />
+            </svg>
             <div style={{
               position: 'absolute',
-              top: '0px',
-              left: '-12px',
-              width: '24px',
-              height: `${25 + offset}px`,
-              background: `linear-gradient(to top, transparent 0%, ${glow} 100%)`,
-              clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-              opacity: 0.6,
-              transformOrigin: 'top',
-              transform: 'rotateX(15deg)'
-            }} />
-            
-            <div style={{
-              position: 'absolute',
-              top: `${20 + offset}px`,
-              left: '-8px',
-              width: '16px',
-              height: '16px',
-              background: `radial-gradient(circle at 30% 30%, #fff 0%, ${core} 40%, #000 100%)`,
-              borderRadius: '50%',
-              boxShadow: `0 0 15px ${glow}`,
-              transform: 'translateZ(10px)'
-            }} />
-
-            <div style={{
-              position: 'absolute',
-              top: `${42 + offset}px`,
+              top: `${30 + offset}px`,
               left: 0,
               transform: 'translateX(-50%)',
-              color: core,
-              fontSize: '12px',
+              color: '#fff',
+              fontSize: '11px',
               fontWeight: 900,
-              letterSpacing: '1px',
+              letterSpacing: '0.5px',
               textShadow: '0 2px 4px rgba(0,0,0,0.8)'
             }}>
               {label}
