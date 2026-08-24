@@ -92,7 +92,7 @@ function Array({ values, pointers, highlights = [], action, swap, visualizationK
         display: 'flex',
         alignItems: 'center', 
         justifyContent: 'center',
-        paddingTop: '20px',
+        paddingTop: '30px',
       }}>
         <Platform3D width={platformWidth} depth={blockDepth * 3.5} thickness={12}>
           {action && (
@@ -125,9 +125,9 @@ function Array({ values, pointers, highlights = [], action, swap, visualizationK
           return (
             <div key={item.id} style={{ 
               position: 'absolute', 
-              bottom: 0,
+              bottom: '0px',
               transformStyle: 'preserve-3d', 
-              transform: `translateX(${xPos}px)`
+              transform: `translate3d(${xPos}px, 0px, 0px)`
             }}>
               <Block3D
                 ref={(el) => { cellRefs.current[item.id] = el }}
@@ -174,6 +174,7 @@ function Array({ values, pointers, highlights = [], action, swap, visualizationK
             />
           </div>
         )}
+        </Platform3D>
       </div>
     </Scene3D>
   )
