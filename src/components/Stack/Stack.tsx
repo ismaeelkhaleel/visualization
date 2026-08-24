@@ -40,7 +40,6 @@ function Stack({
   
   // Center alignment offset
   const stackHeight = items.length * blockH
-  const bottomOffset = 40
 
   return (
     <Scene3D width={viewportWidth} height={viewportHeight}>
