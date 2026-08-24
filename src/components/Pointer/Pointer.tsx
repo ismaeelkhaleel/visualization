@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
-import { theme } from '../../theme'
+
 
 type PointerProps = {
   label: string
