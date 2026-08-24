@@ -8,10 +8,9 @@ type PointerProps = {
   targetY: number
   targetZ?: number
   position: 'top' | 'bottom' | 'left' | 'right'
-  offset?: number
 }
 
-function Pointer({ label, targetX, targetY, targetZ = 10, position, offset = 0 }: PointerProps) {
+function Pointer({ label, targetX, targetY, targetZ = 10, position }: PointerProps) {
   const pointerRef = useRef<HTMLDivElement | null>(null)
   const firstRender = useRef(true)
 
@@ -43,13 +42,13 @@ function Pointer({ label, targetX, targetY, targetZ = 10, position, offset = 0 }
   // Semantic color mapping
   const getPalette = (text: string) => {
     const t = text.toLowerCase()
-    if (t.includes('curr') || t.includes('mid') || t === 'm') return { core: '#facc15', shadow: 'rgba(250,204,21,0.5)' } // yellow
-    if (t.includes('prev') || t.includes('left') || t === 'l') return { core: '#38bdf8', shadow: 'rgba(56,189,248,0.5)' } // cyan
-    if (t.includes('next') || t.includes('right') || t === 'r') return { core: '#c084fc', shadow: 'rgba(192,132,252,0.5)' } // purple
-    return { core: '#f87171', shadow: 'rgba(248,113,113,0.5)' } // red
+    if (t.includes('curr') || t.includes('mid') || t === 'm') return { core: '#facc15' } // yellow
+    if (t.includes('prev') || t.includes('left') || t === 'l') return { core: '#38bdf8' } // cyan
+    if (t.includes('next') || t.includes('right') || t === 'r') return { core: '#c084fc' } // purple
+    return { core: '#f87171' } // red
   }
 
-  const { core, shadow } = getPalette(label)
+  const { core } = getPalette(label)
   
   // Floating animation removed for rigid physical attachment
 
