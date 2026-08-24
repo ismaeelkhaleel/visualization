@@ -74,9 +74,9 @@ const VideoRenderer = forwardRef<HTMLDivElement, VideoRendererProps>(({ step, co
           <VisualizationRenderer step={step} visualizationKey={algorithm} viewportWidth={312} viewportHeight={261} isComplete={isComplete} />
         </div>
 
-        {/* 3. STATUS ZONE - 15% */}
+        {/* 3. STATUS ZONE - 10% */}
         <div style={{
-          height: '15%',
+          height: '10%',
           width: '100%',
           display: 'flex',
           justifyContent: 'center',
@@ -87,9 +87,9 @@ const VideoRenderer = forwardRef<HTMLDivElement, VideoRendererProps>(({ step, co
           <StatusMessage message={step.message} />
         </div>
 
-        {/* 4. CODEPANEL ZONE - 30% */}
+        {/* 4. CODEPANEL ZONE - 35% */}
         <div style={{
-          height: '30%',
+          height: '35%',
           width: '100%',
           display: 'flex',
           justifyContent: 'center',

@@ -17,7 +17,11 @@ type ArrayProps = ArrayVisualizationData & {
 function getState(index: number, highlights: number[], action: string | undefined, swap: { from: number; to: number } | undefined, isComplete: boolean | undefined): SurfaceState {
   if (isComplete) return 'success'
   if (action === 'swap' && swap && (index === swap.from || index === swap.to)) return 'warning'
-  if (highlights.includes(index)) return 'active'
+  if (highlights.includes(index)) {
+    if (action?.includes('NEW BEST') || action?.includes('MAX SUM')) return 'success'
+    if (action?.includes('CURRENT')) return 'compare' // amber
+    return 'active' // cyan
+  }
   return 'neutral'
 }
 
@@ -45,13 +49,13 @@ function Array({ values, pointers, highlights = [], action, swap, visualizationK
   const N = values.length
   const gap = N > 8 ? 4 : 8
   const blockW = Math.min(36, Math.max(16, Math.floor((viewportWidth - 40) / N) - gap))
-  const blockDepth = Math.max(6, blockW * 0.4)
+  const blockDepth = Math.max(12, blockW * 0.8)
   
   const totalWidth = N * blockW + (N - 1) * gap
-  const platformWidth = Math.max(200, totalWidth + 60);
+  const platformWidth = Math.max(220, totalWidth + 60);
   const startX = platformWidth / 2 - totalWidth / 2 + blockW / 2;
 
-  const heights = normalizeValueToHeight(values.map(v => v.value), blockW, 100)
+  const heights = normalizeValueToHeight(values.map(v => v.value), Math.max(16, blockW * 0.6), 150)
 
   useLayoutEffect(() => {
     if (!swap) return
@@ -92,27 +96,49 @@ function Array({ values, pointers, highlights = [], action, swap, visualizationK
         display: 'flex',
         alignItems: 'center', 
         justifyContent: 'center',
-        paddingTop: '30px',
+        paddingTop: '40px', // Push the array down to fill empty space
       }}>
-        <Platform3D width={platformWidth} depth={blockDepth * 3.5} thickness={12}>
+        <Platform3D width={platformWidth} depth={blockDepth * 4.5} thickness={24}>
           {action && (
             <div style={{
               position: 'absolute',
-              transform: `translate3d(${platformWidth/2}px, ${-blockDepth * 1.5}px, 25px) translateX(-50%)`,
-              background: 'rgba(255,255,255,0.1)',
-              padding: '4px 12px',
-              borderRadius: '4px',
+              transform: `translate3d(${platformWidth/2}px, -110px, 0px) translateX(-50%)`,
+              background: 'linear-gradient(135deg, rgba(30,30,35,0.95), rgba(15,15,20,0.95))',
+              border: '1px solid rgba(255,255,255,0.1)',
+              padding: '6px 16px',
+              borderRadius: '6px',
               color: '#fff',
-              fontSize: '12px',
+              fontSize: '11px',
               fontWeight: 800,
               letterSpacing: '1px',
-              textTransform: 'uppercase',
-              boxShadow: '0 4px 10px rgba(0,0,0,0.5)',
+              boxShadow: '0 8px 20px rgba(0,0,0,0.6)',
               transformOrigin: 'center'
             }}>
               {action}
             </div>
           )}
+          
+          {/* Subarray Grouping Zone */}
+          {highlights.length > 1 && (() => {
+            const isSuccess = action?.includes('NEW BEST') || action?.includes('MAX SUM') || isComplete;
+            const rbg = isSuccess ? '16, 185, 129' : '245, 158, 11';
+            return (
+              <div style={{
+                position: 'absolute',
+                bottom: '0px',
+                left: `${startX + Math.min(...highlights) * (blockW + gap) - gap/2}px`,
+                width: `${(Math.max(...highlights) - Math.min(...highlights) + 1) * (blockW + gap)}px`,
+                height: `${blockDepth * 1.5}px`,
+                background: `rgba(${rbg}, 0.15)`,
+                border: `1px solid rgba(${rbg}, 0.3)`,
+                transformOrigin: 'bottom',
+                transform: `translateZ(${-blockDepth * 0.2}px) rotateX(90deg)`,
+                borderRadius: '4px',
+                transition: 'all 0.5s cubic-bezier(0.34,1.56,0.64,1)',
+              }} />
+            );
+          })()}
+
           {values.map((item, index) => {
 
           const state = getState(index, highlights, action, swap, isComplete)

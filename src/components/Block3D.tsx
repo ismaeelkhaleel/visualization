@@ -22,7 +22,7 @@ export const Block3D = React.forwardRef<HTMLDivElement, Block3DProps>(({ width, 
       width: `${width}px`,
       height: `${height}px`,
       transformStyle: 'preserve-3d',
-      transform: `translateZ(${elevation}px)`,
+      transform: `translateY(${-elevation}px) translateZ(${elevation * 0.5}px)`, // Lift up and slightly forward
       transition: 'transform 0.5s cubic-bezier(0.34,1.56,0.64,1)',
     }}>
       {/* Contact Shadow on the Platform (Z = -depth) */}
@@ -66,7 +66,7 @@ export const Block3D = React.forwardRef<HTMLDivElement, Block3DProps>(({ width, 
         height: `${height}px`,
         background: `linear-gradient(135deg, ${s.front} 0%, ${s.side} 150%)`,
         border: `1px solid ${s.border}`,
-        boxShadow: `inset 0 1px 2px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.4)${s.glow !== 'transparent' ? `, 0 0 20px ${s.glow}` : ''}`,
+        boxShadow: `inset 0 1px 2px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.4)`,
         transform: `translateZ(0px)`,
         display: 'flex',
         alignItems: 'center',

@@ -43,14 +43,11 @@ function StatusMessage({ message }: StatusMessageProps) {
       <div
         ref={messageRef}
         style={{
-          maxWidth: '260px',
+          width: '100%',
           fontSize: '12px',
           lineHeight: 1.5,
-          fontWeight: 500,
-          padding: '3px 10px',
-          background: 'rgba(255,255,255,0.03)',
-          borderRadius: '6px',
-          border: '1px solid rgba(255,255,255,0.04)',
+          fontWeight: 600,
+          color: theme.colors.textPrimary,
         }}
       >
         {message}

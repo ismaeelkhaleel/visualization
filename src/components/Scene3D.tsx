@@ -11,8 +11,8 @@ export const Scene3D: React.FC<Scene3DProps> = ({ children, width = 312, height 
     <div style={{
       width: `${width}px`,
       height: `${height}px`,
-      perspective: '1200px',
-      perspectiveOrigin: '50% -20%', // Camera is centered, slightly above
+      perspective: '800px',
+      perspectiveOrigin: '50% -50%', // Camera looks down significantly to reveal depth
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',

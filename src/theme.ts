@@ -45,43 +45,43 @@ export const surfaces: Record<SurfaceState, {
   text: string
 }> = {
   neutral: {
-    top:    '#2a2a2e',
-    front:  '#1c1c1e',
-    side:   '#141416',
-    border: '#3a3a3e',
+    top:    '#252f3f', // dark blue/gray
+    front:  '#1e293b',
+    side:   '#0f172a',
+    border: '#334155',
     glow:   'transparent',
-    text:   '#e8e8ec',
+    text:   '#cbd5e1',
   },
   active: {
-    top:    '#2563eb',
-    front:  '#1e3a8a',
-    side:   '#162d6e',
-    border: '#3b82f6',
-    glow:   'rgba(59,130,246,0.35)',
+    top:    '#0ea5e9', // cyan/blue
+    front:  '#0284c7',
+    side:   '#0369a1',
+    border: '#38bdf8',
+    glow:   'rgba(14, 165, 233, 0.25)',
     text:   '#ffffff',
   },
   compare: {
-    top:    '#7c3aed',
-    front:  '#4c1d95',
-    side:   '#3b1578',
-    border: '#a855f7',
-    glow:   'rgba(168,85,247,0.3)',
+    top:    '#f59e0b', // amber
+    front:  '#d97706',
+    side:   '#b45309',
+    border: '#fbbf24',
+    glow:   'rgba(245, 158, 11, 0.25)',
     text:   '#ffffff',
   },
   success: {
-    top:    '#059669',
-    front:  '#064e3b',
-    side:   '#053f30',
-    border: '#10b981',
-    glow:   'rgba(16,185,129,0.35)',
+    top:    '#10b981', // green
+    front:  '#059669',
+    side:   '#047857',
+    border: '#34d399',
+    glow:   'rgba(16, 185, 129, 0.2)',
     text:   '#ffffff',
   },
   warning: {
-    top:    '#d97706',
-    front:  '#78350f',
-    side:   '#5c2a0b',
-    border: '#f59e0b',
-    glow:   'rgba(245,158,11,0.3)',
+    top:    '#ef4444', // red/warning
+    front:  '#dc2626',
+    side:   '#b91c1c',
+    border: '#f87171',
+    glow:   'rgba(239, 68, 68, 0.25)',
     text:   '#ffffff',
   },
   visited: {
@@ -89,7 +89,7 @@ export const surfaces: Record<SurfaceState, {
     front:  '#0f2340',
     side:   '#0b1a30',
     border: '#2563eb',
-    glow:   'rgba(37,99,235,0.15)',
+    glow:   'rgba(37,99,235,0.1)',
     text:   '#93c5fd',
   },
 }

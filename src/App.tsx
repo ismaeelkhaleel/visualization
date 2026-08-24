@@ -547,10 +547,10 @@ function App() {
               <VisualizationRenderer step={step} visualizationKey={algorithm} viewportWidth={312} viewportHeight={261} isComplete={currentStep === currentSteps.length - 1} />
             </div>
 
-            {/* 3. STATUS ZONE - 15% */}
+            {/* 3. STATUS ZONE - 10% */}
             <div
               style={{
-                height: '15%',
+                height: '10%',
                 width: '100%',
                 display: 'flex',
                 justifyContent: 'center',
@@ -562,10 +562,10 @@ function App() {
               <StatusMessage message={step.message} />
             </div>
 
-            {/* 4. CODEPANEL ZONE - 30% */}
+            {/* 4. CODEPANEL ZONE - 35% */}
             <div
               style={{
-                height: '30%',
+                height: '35%',
                 width: '100%',
                 display: 'flex',
                 justifyContent: 'center',

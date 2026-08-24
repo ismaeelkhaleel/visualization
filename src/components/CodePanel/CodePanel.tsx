@@ -26,8 +26,7 @@ function CodePanel({ code, activeLine }: CodePanelProps) {
       className="hide-scrollbar"
       style={{
         width: '100%',
-        height: 'fit-content',
-        maxHeight: '100%',
+        height: '100%',
         boxSizing: 'border-box',
         // 3D panel with visible extrusion
         background: `linear-gradient(180deg, #222226 0%, ${theme.colors.panelBackground} 20px, ${theme.colors.panelBackground} 100%)`,
