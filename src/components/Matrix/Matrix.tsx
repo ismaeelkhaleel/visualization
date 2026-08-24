@@ -4,6 +4,7 @@ import type { MatrixVisualizationData } from '../../algorithms/types'
 import { type SurfaceState } from '../../theme'
 import Pointers from '../Pointers/Pointers'
 import { Block3D } from '../Block3D'
+import { Platform3D } from '../Platform3D'
 import { Scene3D } from '../Scene3D'
 
 interface MatrixProps {
@@ -44,8 +45,10 @@ export const Matrix: React.FC<MatrixProps> = ({ data, isComplete, viewportWidth 
 
   const totalGridWidth = cols * cellSize + (cols - 1) * gap
   const totalGridHeight = rows * cellSize + (rows - 1) * gap
-  const offsetX = -totalGridWidth / 2 + cellSize / 2
-  const offsetY = -totalGridHeight / 2 + cellSize / 2
+  const pWidth = Math.max(200, totalGridWidth + 40);
+  const offsetX = pWidth / 2 - totalGridWidth / 2 + cellSize / 2;
+  const pDepth = Math.max(200, totalGridHeight + 40);
+  const offsetY = pDepth / 2 - totalGridHeight / 2 + cellSize / 2;
 
   const getCellState = (r: number, c: number): SurfaceState => {
     if (isComplete) return 'success'
@@ -66,6 +69,7 @@ export const Matrix: React.FC<MatrixProps> = ({ data, isComplete, viewportWidth 
         alignItems: 'center',
         justifyContent: 'center',
       }}>
+        <Platform3D width={Math.max(200, totalGridWidth + 40)} depth={Math.max(200, totalGridHeight + 40)} thickness={12}>
         {Array.from({ length: rows }).map((_, r) => (
           Array.from({ length: cols }).map((_, c) => {
             const cellData = cells.find(cell => cell.row === r && cell.col === c)
@@ -117,6 +121,7 @@ export const Matrix: React.FC<MatrixProps> = ({ data, isComplete, viewportWidth 
             })}
           />
         </div>
+        </Platform3D>
       </div>
     </Scene3D>
   )
