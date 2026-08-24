@@ -148,7 +148,6 @@ function Pointer({ label, targetX, targetY, targetZ = 10, position, offset = 0 }
           </div>
         )}
 
-      </div>
     </div>
   )
 }
