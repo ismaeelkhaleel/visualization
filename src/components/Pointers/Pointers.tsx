@@ -23,7 +23,7 @@ function Pointers({ pointers }: PointersProps) {
   return (
     <>
       {Object.values(grouped).map((group) => {
-        return group.map((pointer, i) => {
+        return group.map((pointer) => {
           return (
             <Pointer
               key={pointer.label}
