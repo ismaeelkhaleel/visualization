@@ -4,6 +4,7 @@ import type { LinkedListVisualizationData } from '../../algorithms/types'
 import { surfaces, type SurfaceState } from '../../theme'
 import Pointers from '../Pointers/Pointers'
 import { Block3D } from '../Block3D'
+import { Platform3D } from '../Platform3D'
 import { Scene3D } from '../Scene3D'
 
 type LinkedListProps = LinkedListVisualizationData & {
@@ -50,8 +51,10 @@ function LinkedList({ nodes, headId, pointers = [], highlights = [], visualizati
   const cols = Math.min(nodes.length, maxPerRow)
   const totalW = (cols - 1) * xSpacing
   const totalH = (rows - 1) * ySpacing
-  const offsetX = -totalW / 2
-  const offsetY = -totalH / 2
+  const pWidth = Math.max(250, totalW + 80);
+  const offsetX = pWidth / 2 - totalW / 2;
+  const pDepth = Math.max(120, totalH + 80);
+  const offsetY = pDepth / 2 - totalH / 2;
 
   return (
     <Scene3D width={viewportWidth} height={viewportHeight}>
@@ -63,6 +66,7 @@ function LinkedList({ nodes, headId, pointers = [], highlights = [], visualizati
         alignItems: 'center',
         justifyContent: 'center',
       }}>
+        <Platform3D width={Math.max(250, totalW + 80)} depth={Math.max(120, totalH + 80)} thickness={12}>
         {/* Edges Layer (drawn physically behind nodes Z=-2) */}
         <div style={{
           position: 'absolute',
@@ -197,6 +201,7 @@ function LinkedList({ nodes, headId, pointers = [], highlights = [], visualizati
             })}
           />
         </div>
+        </Platform3D>
       </div>
     </Scene3D>
   )

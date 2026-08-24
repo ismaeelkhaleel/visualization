@@ -4,6 +4,7 @@ import type { ArrayVisualizationData } from '../../algorithms/types'
 import Pointers from '../Pointers/Pointers'
 import { type SurfaceState } from '../../theme'
 import { Block3D } from '../Block3D'
+import { Platform3D } from '../Platform3D'
 import { Scene3D } from '../Scene3D'
 
 type ArrayProps = ArrayVisualizationData & {
@@ -47,7 +48,8 @@ function Array({ values, pointers, highlights = [], action, swap, visualizationK
   const blockDepth = Math.max(6, blockW * 0.4)
   
   const totalWidth = N * blockW + (N - 1) * gap
-  const startX = -totalWidth / 2 + blockW / 2
+  const platformWidth = Math.max(200, totalWidth + 60);
+  const startX = platformWidth / 2 - totalWidth / 2 + blockW / 2;
 
   const heights = normalizeValueToHeight(values.map(v => v.value), blockW, 100)
 
@@ -88,11 +90,31 @@ function Array({ values, pointers, highlights = [], action, swap, visualizationK
         transformStyle: 'preserve-3d',
         width: '100%', height: '100%',
         display: 'flex',
-        alignItems: 'flex-end', // align bottoms
+        alignItems: 'center', 
         justifyContent: 'center',
-        paddingBottom: '30px', // Lift up from absolute bottom
+        paddingTop: '20px',
       }}>
-        {values.map((item, index) => {
+        <Platform3D width={platformWidth} depth={blockDepth * 3.5} thickness={12}>
+          {action && (
+            <div style={{
+              position: 'absolute',
+              transform: `translate3d(${platformWidth/2}px, ${-blockDepth * 1.5}px, 25px) translateX(-50%)`,
+              background: 'rgba(255,255,255,0.1)',
+              padding: '4px 12px',
+              borderRadius: '4px',
+              color: '#fff',
+              fontSize: '12px',
+              fontWeight: 800,
+              letterSpacing: '1px',
+              textTransform: 'uppercase',
+              boxShadow: '0 4px 10px rgba(0,0,0,0.5)',
+              transformOrigin: 'center'
+            }}>
+              {action}
+            </div>
+          )}
+          {values.map((item, index) => {
+
           const state = getState(index, highlights, action, swap, isComplete)
           const isElevated = state !== 'neutral'
           const elevZ = isElevated ? 15 : 0
@@ -133,7 +155,7 @@ function Array({ values, pointers, highlights = [], action, swap, visualizationK
         })}
         
         {pointers && (
-          <div style={{ position: 'absolute', bottom: 0, transformStyle: 'preserve-3d' }}>
+          <div style={{ position: 'absolute', bottom: '0px', transformStyle: 'preserve-3d' }}>
             <Pointers
               pointers={pointers.map(p => {
                 const index = p.index ?? 0

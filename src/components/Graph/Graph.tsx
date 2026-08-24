@@ -3,6 +3,7 @@ import gsap from 'gsap'
 import type { GraphVisualizationData } from '../../algorithms/types'
 import { surfaces, type SurfaceState } from '../../theme'
 import Pointers from '../Pointers/Pointers'
+import { Platform3D } from '../Platform3D'
 import { Scene3D } from '../Scene3D'
 
 type GraphProps = GraphVisualizationData & {
@@ -52,6 +53,7 @@ function Graph({ nodes, edges, pointers = [], highlights = [], visited = [], vis
         alignItems: 'center',
         justifyContent: 'center',
       }}>
+        <Platform3D width={260} depth={260} thickness={12}>
         {/* Edges */}
         {edges.map((edge, i) => {
           const fromPos = layoutMap.get(edge.from)
@@ -179,6 +181,7 @@ function Graph({ nodes, edges, pointers = [], highlights = [], visited = [], vis
             }).filter(p => p.x !== 0 || p.y !== 0)}
           />
         </div>
+        </Platform3D>
       </div>
     </Scene3D>
   )

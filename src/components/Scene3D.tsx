@@ -12,7 +12,7 @@ export const Scene3D: React.FC<Scene3DProps> = ({ children, width = 312, height 
       width: `${width}px`,
       height: `${height}px`,
       perspective: '1200px',
-      perspectiveOrigin: '100% -50%', // Camera is top-right, looking at center. Reveals Top and Left faces.
+      perspectiveOrigin: '50% -20%', // Camera is centered, slightly above
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',

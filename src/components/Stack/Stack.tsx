@@ -4,6 +4,7 @@ import type { StackVisualizationData } from '../../algorithms/types'
 import { surfaces, type SurfaceState } from '../../theme'
 import Pointers from '../Pointers/Pointers'
 import { Block3D } from '../Block3D'
+import { Platform3D } from '../Platform3D'
 import { Scene3D } from '../Scene3D'
 
 type StackProps = StackVisualizationData & {
@@ -50,14 +51,15 @@ function Stack({
         display: 'flex',
         alignItems: 'flex-end',
         justifyContent: 'center',
-        paddingBottom: `${bottomOffset}px`
+        paddingTop: '50px'
       }}>
+        <Platform3D width={120} depth={80} thickness={12}>
         {/* Token indicator hovering above */}
         {currentToken !== undefined && currentToken !== null && (
           <div style={{
             position: 'absolute',
             transformStyle: 'preserve-3d',
-            transform: `translateY(-${stackHeight + 50}px)`,
+            transform: `translate3d(60px, -${stackHeight + 50}px, 0px) translateX(-50%)`,
             display: 'flex', flexDirection: 'column', alignItems: 'center'
           }}>
             <div style={{
@@ -97,9 +99,9 @@ function Stack({
           return (
             <div key={item.id} style={{
               position: 'absolute',
-              bottom: 0,
+              bottom: '0px',
               transformStyle: 'preserve-3d',
-              transform: `translateY(-${yPos}px)`
+              transform: `translate3d(35px, -${yPos}px, 0px)`
             }}>
               <Block3D
                 width={blockW}
@@ -115,7 +117,7 @@ function Stack({
 
         {/* TOP Pointer */}
         {items.length > 0 && topLabel && (
-          <div style={{ position: 'absolute', bottom: 0, transformStyle: 'preserve-3d' }}>
+          <div style={{ position: 'absolute', bottom: '0px', transformStyle: 'preserve-3d' }}>
             {(() => {
               const topIndex = items.length - 1
               const isHighlighted = highlights.includes(topIndex)
@@ -126,7 +128,7 @@ function Stack({
                 <Pointers
                   pointers={[{
                     label: 'TOP',
-                    x: blockW / 2,
+                    x: 35 + blockW / 2,
                     y: -(topIndex * blockH + blockH / 2),
                     z: elevZ,
                     position: 'right'
@@ -136,6 +138,7 @@ function Stack({
             })()}
           </div>
         )}
+        </Platform3D>
       </div>
     </Scene3D>
   )

@@ -3,6 +3,7 @@ import gsap from 'gsap'
 import type { TreeVisualizationData, TreeNode } from '../../algorithms/types'
 import { surfaces, type SurfaceState } from '../../theme'
 import Pointers from '../Pointers/Pointers'
+import { Platform3D } from '../Platform3D'
 import { Scene3D } from '../Scene3D'
 
 type TreeProps = TreeVisualizationData & {
@@ -79,8 +80,10 @@ function Tree({ nodes, rootId, pointers = [], highlights = [], visualizationKey,
   }
 
   const R = 20
-  const offsetX = -totalW / 2 + R
-  const offsetY = -totalH / 2 + R
+  const pWidth = Math.max(250, totalW + 80);
+  const offsetX = pWidth / 2 - totalW / 2 + R;
+  const pDepth = Math.max(120, totalH + 80);
+  const offsetY = pDepth / 2 - totalH / 2 + R;
 
   return (
     <Scene3D width={viewportWidth} height={viewportHeight}>
@@ -92,6 +95,7 @@ function Tree({ nodes, rootId, pointers = [], highlights = [], visualizationKey,
         alignItems: 'center',
         justifyContent: 'center',
       }}>
+        <Platform3D width={Math.max(250, totalW + 80)} depth={Math.max(120, totalH + 80)} thickness={12}>
         {/* Edges */}
         {edges.map((edge, i) => {
           const dx = edge.x2 - edge.x1
@@ -194,6 +198,7 @@ function Tree({ nodes, rootId, pointers = [], highlights = [], visualizationKey,
             })}
           />
         </div>
+        </Platform3D>
       </div>
     </Scene3D>
   )
