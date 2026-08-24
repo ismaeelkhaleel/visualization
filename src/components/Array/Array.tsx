@@ -102,19 +102,25 @@ function Array({ values, pointers, highlights = [], action, swap, visualizationK
           {action && (
             <div style={{
               position: 'absolute',
-              transform: `translate3d(${platformWidth/2}px, -110px, 0px) translateX(-50%)`,
-              background: 'linear-gradient(135deg, rgba(30,30,35,0.95), rgba(15,15,20,0.95))',
-              border: '1px solid rgba(255,255,255,0.1)',
-              padding: '6px 16px',
-              borderRadius: '6px',
+              transform: `translate3d(${platformWidth/2}px, 60px, 0px) translateX(-50%)`, // BELOW the platform
+              background: 'linear-gradient(135deg, rgba(15,23,42,0.95), rgba(2,6,23,0.95))', // Slate dark
+              border: '1px solid rgba(255,255,255,0.05)',
+              padding: '10px 20px',
+              borderRadius: '8px',
               color: '#fff',
-              fontSize: '11px',
+              fontSize: '12px',
               fontWeight: 800,
               letterSpacing: '1px',
-              boxShadow: '0 8px 20px rgba(0,0,0,0.6)',
-              transformOrigin: 'center'
+              boxShadow: '0 12px 30px rgba(0,0,0,0.8)',
+              transformOrigin: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '4px',
+              alignItems: 'center'
             }}>
-              {action}
+              {action.split('|').map((line, i) => (
+                <div key={i}>{line.trim()}</div>
+              ))}
             </div>
           )}
           

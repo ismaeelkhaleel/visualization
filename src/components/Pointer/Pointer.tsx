@@ -51,20 +51,7 @@ function Pointer({ label, targetX, targetY, targetZ = 10, position, offset = 0 }
 
   const { core, shadow } = getPalette(label)
   
-  // Floating animation
-  useLayoutEffect(() => {
-    if (!pointerRef.current) return
-    const hoverEl = pointerRef.current.querySelector('.pointer-hover')
-    if (hoverEl) {
-      gsap.to(hoverEl, {
-        y: -4,
-        duration: 1.2,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut'
-      })
-    }
-  }, [])
+  // Floating animation removed for rigid physical attachment
 
   return (
     <div
@@ -77,45 +64,44 @@ function Pointer({ label, targetX, targetY, targetZ = 10, position, offset = 0 }
         transformStyle: 'preserve-3d'
       }}
     >
-      <div className="pointer-hover" style={{ position: 'absolute', top: 0, left: 0, transformStyle: 'preserve-3d' }}>
-        
         {position === 'top' && (
           <div style={{ position: 'absolute', bottom: '0px', left: 0, transformStyle: 'preserve-3d' }}>
             
-            {/* The 3D Downward Cone/Pyramid */}
-            <svg width="24" height="24" viewBox="0 0 24 24" style={{ 
-              position: 'absolute', bottom: `${4 + offset}px`, left: '-12px',
-              filter: `drop-shadow(0 4px 6px ${shadow})`
+            {/* The Dimensional Stem Pointer */}
+            <svg width="20" height="32" viewBox="0 0 20 32" style={{ 
+              position: 'absolute', bottom: `0px`, left: '-10px',
+              filter: `drop-shadow(0 6px 4px rgba(0,0,0,0.5))`
             }}>
               <defs>
-                <linearGradient id={`grad-left-${label}`} x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#fff" stopOpacity="0.8"/>
-                  <stop offset="100%" stopColor={core} />
-                </linearGradient>
-                <linearGradient id={`grad-right-${label}`} x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor={core} />
-                  <stop offset="100%" stopColor="#000" stopOpacity="0.6"/>
+                <linearGradient id={`grad-stem-${label}`} x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#fff" stopOpacity="0.7"/>
+                  <stop offset="50%" stopColor={core} />
+                  <stop offset="100%" stopColor="#000" stopOpacity="0.4"/>
                 </linearGradient>
               </defs>
-              {/* Left face */}
-              <polygon points="12,24 0,4 12,8" fill={`url(#grad-left-${label})`} />
-              {/* Right face */}
-              <polygon points="12,24 12,8 24,4" fill={`url(#grad-right-${label})`} />
-              {/* Top Face */}
-              <polygon points="0,4 12,0 24,4 12,8" fill={core} />
+              {/* Stem */}
+              <rect x="8" y="4" width="4" height="20" fill={`url(#grad-stem-${label})`} />
+              {/* Arrow Head */}
+              <polygon points="10,32 4,22 16,22" fill={core} />
+              <polygon points="10,32 4,22 10,22" fill="#fff" fillOpacity="0.3" />
+              <polygon points="10,32 10,22 16,22" fill="#000" fillOpacity="0.2" />
             </svg>
 
             {/* Label */}
             <div style={{
               position: 'absolute',
-              bottom: `${30 + offset}px`,
+              bottom: `34px`,
               left: 0,
               transform: 'translateX(-50%)',
-              color: '#fff',
+              color: core,
               fontSize: '11px',
               fontWeight: 900,
               letterSpacing: '0.5px',
-              textShadow: '0 2px 4px rgba(0,0,0,0.8)'
+              background: '#111',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              border: `1px solid ${core}`,
+              boxShadow: '0 4px 6px rgba(0,0,0,0.6)'
             }}>
               {label}
             </div>
@@ -124,37 +110,38 @@ function Pointer({ label, targetX, targetY, targetZ = 10, position, offset = 0 }
 
         {position === 'bottom' && (
           <div style={{ position: 'absolute', top: '0px', left: 0, transformStyle: 'preserve-3d' }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" style={{ 
-              position: 'absolute', top: `${4 + offset}px`, left: '-12px',
-              filter: `drop-shadow(0 -4px 6px ${shadow})`
+            <svg width="20" height="32" viewBox="0 0 20 32" style={{ 
+              position: 'absolute', top: `0px`, left: '-10px',
+              filter: `drop-shadow(0 -6px 4px rgba(0,0,0,0.5))`
             }}>
               <defs>
-                <linearGradient id={`grad-left-b-${label}`} x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#fff" stopOpacity="0.8"/>
-                  <stop offset="100%" stopColor={core} />
-                </linearGradient>
-                <linearGradient id={`grad-right-b-${label}`} x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor={core} />
-                  <stop offset="100%" stopColor="#000" stopOpacity="0.6"/>
+                <linearGradient id={`grad-stem-b-${label}`} x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#fff" stopOpacity="0.7"/>
+                  <stop offset="50%" stopColor={core} />
+                  <stop offset="100%" stopColor="#000" stopOpacity="0.4"/>
                 </linearGradient>
               </defs>
-              {/* Left face */}
-              <polygon points="12,0 0,20 12,16" fill={`url(#grad-left-b-${label})`} />
-              {/* Right face */}
-              <polygon points="12,0 12,16 24,20" fill={`url(#grad-right-b-${label})`} />
-              {/* Bottom Face */}
-              <polygon points="0,20 12,24 24,20 12,16" fill={core} />
+              {/* Stem */}
+              <rect x="8" y="8" width="4" height="20" fill={`url(#grad-stem-b-${label})`} />
+              {/* Arrow Head */}
+              <polygon points="10,0 4,10 16,10" fill={core} />
+              <polygon points="10,0 4,10 10,10" fill="#fff" fillOpacity="0.3" />
+              <polygon points="10,0 10,10 16,10" fill="#000" fillOpacity="0.2" />
             </svg>
             <div style={{
               position: 'absolute',
-              top: `${30 + offset}px`,
+              top: `34px`,
               left: 0,
               transform: 'translateX(-50%)',
-              color: '#fff',
+              color: core,
               fontSize: '11px',
               fontWeight: 900,
               letterSpacing: '0.5px',
-              textShadow: '0 2px 4px rgba(0,0,0,0.8)'
+              background: '#111',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              border: `1px solid ${core}`,
+              boxShadow: '0 4px 6px rgba(0,0,0,0.6)'
             }}>
               {label}
             </div>

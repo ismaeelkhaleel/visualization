@@ -502,7 +502,7 @@ function App() {
             flexDirection: 'column',
             alignItems: 'center',
             boxSizing: 'border-box',
-            padding: '24px',
+            padding: '16px',
             overflow: 'hidden',
           }}
         >
@@ -521,7 +521,8 @@ function App() {
               width: '100%',
               display: 'flex',
               justifyContent: 'center',
-              alignItems: 'center',
+              alignItems: 'flex-start', // Push title to the top of its zone
+              paddingTop: '8px',
               color: '#f5f5f5',
               fontSize: '18px',
               fontWeight: 800,
@@ -532,19 +533,19 @@ function App() {
               <span ref={titleRef}>{visualization.title}</span>
             </div>
 
-            {/* 2. VISUALIZATION ZONE - 45% */}
+            {/* 2. VISUALIZATION ZONE - 50% */}
             <div
               style={{
-                height: '45%',
+                height: '50%',
                 width: '100%',
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'center',
+                alignItems: 'center', // This centers the Array vertically inside the 50% area
                 overflow: 'hidden',
                 flexShrink: 0,
               }}
             >
-              <VisualizationRenderer step={step} visualizationKey={algorithm} viewportWidth={312} viewportHeight={261} isComplete={currentStep === currentSteps.length - 1} />
+              <VisualizationRenderer step={step} visualizationKey={algorithm} viewportWidth={328} viewportHeight={304} isComplete={currentStep === currentSteps.length - 1} />
             </div>
 
             {/* 3. STATUS ZONE - 10% */}
@@ -562,10 +563,10 @@ function App() {
               <StatusMessage message={step.message} />
             </div>
 
-            {/* 4. CODEPANEL ZONE - 35% */}
+            {/* 4. CODEPANEL ZONE - 30% */}
             <div
               style={{
-                height: '35%',
+                height: '30%',
                 width: '100%',
                 display: 'flex',
                 justifyContent: 'center',

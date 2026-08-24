@@ -27,7 +27,7 @@ export function maxSubArray(nums: number[]): VisualizationStep[] {
       data: { 
         values: [...arr], 
         highlights: [0], 
-        action: `CURRENT: ${currentSum}  |  BEST: ${maxSum}`,
+        action: `CURRENT SUM: ${currentSum} | BEST SUM: ${maxSum}`,
         pointers: [{label:'i',index:0,position:'top'}] 
       } 
     }] 
@@ -43,7 +43,7 @@ export function maxSubArray(nums: number[]): VisualizationStep[] {
         data: { 
           values: [...arr], 
           highlights: buildHighlights(currentStart, i - 1), 
-          action: `CURRENT: ${currentSum}  |  BEST: ${maxSum}`,
+          action: `CURRENT SUM: ${currentSum} | BEST SUM: ${maxSum}`,
           pointers: [{label:'i',index:i,position:'top'}] 
         } 
       }] 
@@ -61,7 +61,7 @@ export function maxSubArray(nums: number[]): VisualizationStep[] {
           data: { 
             values: [...arr], 
             highlights: [i], 
-            action: `CURRENT: ${currentSum}  |  BEST: ${maxSum}`,
+            action: `CURRENT SUM: ${currentSum} | BEST SUM: ${maxSum}`,
             pointers: [{label:'i',index:i,position:'top'}] 
           } 
         }] 
@@ -77,7 +77,7 @@ export function maxSubArray(nums: number[]): VisualizationStep[] {
           data: { 
             values: [...arr], 
             highlights: buildHighlights(currentStart, i), 
-            action: `CURRENT: ${currentSum}  |  BEST: ${maxSum}`,
+            action: `CURRENT SUM: ${currentSum} | BEST SUM: ${maxSum}`,
             pointers: [{label:'i',index:i,position:'top'}] 
           } 
         }] 

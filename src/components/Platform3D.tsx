@@ -40,8 +40,8 @@ export const Platform3D: React.FC<Platform3DProps> = ({ width, depth, thickness 
         left: 0,
         width: `${width}px`,
         height: `${depth}px`,
-        background: `linear-gradient(to bottom, #2a2a30 0%, #1e1e24 100%)`,
-        border: `1px solid #3d3d45`,
+        background: `linear-gradient(to bottom, #334155 0%, #1e293b 100%)`, // Slate steel
+        border: `1px solid #475569`,
         borderBottom: 'none',
         transformOrigin: 'bottom',
         transform: `rotateX(90deg)`,
@@ -50,7 +50,7 @@ export const Platform3D: React.FC<Platform3DProps> = ({ width, depth, thickness 
         {/* Top edge highlight */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, width: '100%', height: '2px',
-          background: 'rgba(255,255,255,0.15)'
+          background: 'rgba(255,255,255,0.25)'
         }} />
       </div>
 
@@ -61,8 +61,8 @@ export const Platform3D: React.FC<Platform3DProps> = ({ width, depth, thickness 
         left: 0,
         width: `${width}px`,
         height: `${thickness}px`,
-        background: `linear-gradient(135deg, #1f1f25 0%, #111114 150%)`,
-        border: `1px solid #2a2a2e`,
+        background: `linear-gradient(135deg, #1e293b 0%, #0f172a 150%)`,
+        border: `1px solid #334155`,
         borderTop: 'none',
         transformOrigin: 'top',
         transform: `translateZ(0px)`,
@@ -78,7 +78,7 @@ export const Platform3D: React.FC<Platform3DProps> = ({ width, depth, thickness 
         left: 0,
         width: `${depth}px`,
         height: `${thickness}px`,
-        background: '#151518',
+        background: '#0f172a',
         transformOrigin: 'left top',
         transform: `rotateY(-90deg)`,
         border: `1px solid rgba(0,0,0,0.6)`,
@@ -93,7 +93,7 @@ export const Platform3D: React.FC<Platform3DProps> = ({ width, depth, thickness 
         left: '100%',
         width: `${depth}px`,
         height: `${thickness}px`,
-        background: '#111113',
+        background: '#020617',
         transformOrigin: 'left top',
         transform: `rotateY(-90deg)`,
         border: `1px solid rgba(0,0,0,0.8)`,
