@@ -1,7 +1,5 @@
 import { forwardRef } from 'react'
-import { theme } from '../theme'
 import VisualizationRenderer from '../components/VisualizationRenderer/VisualizationRenderer'
-import StatusMessage from '../components/StatusMessage/StatusMessage'
 import CodePanel from '../components/CodePanel/CodePanel'
 import type { VisualizationStep } from '../algorithms/types'
 import { problems } from '../data/problems'
@@ -10,12 +8,13 @@ type VideoRendererProps = {
   step: VisualizationStep
   code: string[]
   algorithm: string
-  isComplete?: boolean
+  isComplete: boolean
 }
 
 const VideoRenderer = forwardRef<HTMLDivElement, VideoRendererProps>(({ step, code, algorithm, isComplete }, ref) => {
   const currentProblem = problems.find(p => p.id === algorithm)
   const title = currentProblem ? currentProblem.title : ''
+  const visualization = currentProblem?.visualization
   
   return (
     <div
@@ -24,8 +23,8 @@ const VideoRenderer = forwardRef<HTMLDivElement, VideoRendererProps>(({ step, co
         width: '360px',
         height: '640px',
         position: 'relative',
-        background: `radial-gradient(ellipse at 50% 40%, #0c0c10 0%, ${theme.colors.videoBackground} 70%)`,
-        border: `1px solid ${theme.colors.panelBorder}`,
+        background: '#000000',
+        border: '1px solid rgba(255,255,255,0.06)',
         borderRadius: '14px',
         boxSizing: 'border-box',
         padding: '16px',
@@ -50,7 +49,7 @@ const VideoRenderer = forwardRef<HTMLDivElement, VideoRendererProps>(({ step, co
           width: '100%',
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'flex-start', // push up
+          alignItems: 'flex-start',
           paddingTop: '8px',
           color: '#f5f5f5',
           fontSize: '18px',
@@ -59,7 +58,7 @@ const VideoRenderer = forwardRef<HTMLDivElement, VideoRendererProps>(({ step, co
           textAlign: 'center',
           textShadow: '0 2px 10px rgba(0,0,0,0.8)'
         }}>
-          {title}
+          <span>{visualization?.title ?? title}</span>
         </div>
 
         {/* 2. VISUALIZATION ZONE - 50% */}
@@ -68,33 +67,21 @@ const VideoRenderer = forwardRef<HTMLDivElement, VideoRendererProps>(({ step, co
           width: '100%',
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center',
+          alignItems: 'flex-start',
           overflow: 'hidden',
           flexShrink: 0,
+          paddingTop: '4px',
         }}>
-          <VisualizationRenderer step={step} visualizationKey={algorithm} viewportWidth={328} viewportHeight={304} isComplete={isComplete} />
+          <VisualizationRenderer step={step} visualizationKey={algorithm} viewportWidth={328} viewportHeight={250} isComplete={isComplete} speed={1} isJump={false} />
         </div>
 
-        {/* 3. STATUS ZONE - 10% */}
+        {/* 4. CODEPANEL ZONE - 40% */}
         <div style={{
-          height: '10%',
+          height: '40%',
           width: '100%',
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
-          flexShrink: 0,
-        }}>
-          <StatusMessage message={step.message} />
-        </div>
-
-        {/* 4. CODEPANEL ZONE - 30% */}
-        <div style={{
-          height: '30%',
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
+          alignItems: 'stretch',
           overflow: 'hidden',
           flexShrink: 0,
         }}>

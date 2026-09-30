@@ -45,63 +45,63 @@ export const surfaces: Record<SurfaceState, {
   text: string
 }> = {
   neutral: {
-    top:    '#252f3f', // dark blue/gray
-    front:  '#1e293b',
-    side:   '#0f172a',
-    border: '#334155',
+    top:    '#475569',
+    front:  '#334155',
+    side:   '#1e293b',
+    border: '#64748b',
     glow:   'transparent',
-    text:   '#cbd5e1',
+    text:   '#f1f5f9',
   },
   active: {
-    top:    '#0ea5e9', // cyan/blue
+    top:    '#0ea5e9',
     front:  '#0284c7',
     side:   '#0369a1',
     border: '#38bdf8',
-    glow:   'rgba(14, 165, 233, 0.25)',
+    glow:   'rgba(14, 165, 233, 0.5)',
     text:   '#ffffff',
   },
   compare: {
-    top:    '#f59e0b', // amber
+    top:    '#f59e0b',
     front:  '#d97706',
     side:   '#b45309',
     border: '#fbbf24',
-    glow:   'rgba(245, 158, 11, 0.25)',
+    glow:   'rgba(245, 158, 11, 0.5)',
     text:   '#ffffff',
   },
   success: {
-    top:    '#10b981', // green
+    top:    '#10b981',
     front:  '#059669',
     side:   '#047857',
     border: '#34d399',
-    glow:   'rgba(16, 185, 129, 0.2)',
+    glow:   'rgba(16, 185, 129, 0.5)',
     text:   '#ffffff',
   },
   warning: {
-    top:    '#ef4444', // red/warning
+    top:    '#ef4444',
     front:  '#dc2626',
     side:   '#b91c1c',
     border: '#f87171',
-    glow:   'rgba(239, 68, 68, 0.25)',
+    glow:   'rgba(239, 68, 68, 0.5)',
     text:   '#ffffff',
   },
   visited: {
-    top:    '#1e3a5f',
-    front:  '#0f2340',
-    side:   '#0b1a30',
-    border: '#2563eb',
-    glow:   'rgba(37,99,235,0.1)',
-    text:   '#93c5fd',
+    top:    '#3b82f6',
+    front:  '#2563eb',
+    side:   '#1d4ed8',
+    border: '#60a5fa',
+    glow:   'rgba(37, 99, 235, 0.2)',
+    text:   'rgba(255, 255, 255, 0.85)',
   },
 }
 
 // ── Legacy-compatible theme object ───────────────────────────
 export const theme = {
   colors: {
-    // Base Canvas
-    background: '#0a0a0c',
-    videoBackground: '#050507',
-    panelBackground: '#111114',
-    panelBorder: '#1e1e22',
+    // Base Canvas (Deep space glass background)
+    background: '#09090b',
+    videoBackground: 'transparent',
+    panelBackground: 'rgba(20, 20, 25, 0.4)',
+    panelBorder: 'rgba(255, 255, 255, 0.08)',
 
     // Typography
     textPrimary: '#e8e8ec',
@@ -109,11 +109,11 @@ export const theme = {
     textMuted: '#505068',
 
     // Semantic States (legacy access)
-    neutral: { bg: surfaces.neutral.front, border: surfaces.neutral.border },
-    active:  { bg: surfaces.active.front,  border: surfaces.active.border },
-    compare: { bg: surfaces.compare.front, border: surfaces.compare.border },
-    success: { bg: surfaces.success.front, border: surfaces.success.border },
-    warning: { bg: surfaces.warning.front, border: surfaces.warning.border },
+    neutral: { bg: '#334155', border: '#64748b' },
+    active:  { bg: '#0284c7',  border: '#38bdf8' },
+    compare: { bg: '#d97706', border: '#fbbf24' },
+    success: { bg: '#059669', border: '#34d399' },
+    warning: { bg: '#dc2626', border: '#f87171' },
 
     // Pointers and Edges
     pointer: '#38bdf8',
@@ -175,7 +175,7 @@ export function block3dStyle(
   depthLevel: number,
   width: number,
   height: number,
-  borderRadius: number = 6,
+  borderRadius: number = 8, // slightly more rounded for glass
 ) {
   const s = surfaces[state]
   const blockDepth = Math.max(3, depthLevel * 0.6)
@@ -186,16 +186,19 @@ export function block3dStyle(
     height: `${height}px`,
     transformStyle: 'preserve-3d' as const,
     transform: `translateZ(${depthLevel}px)`,
-    transition: 'transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease',
-    // Top face styling on main element
-    background: `linear-gradient(180deg, ${s.top} 0%, ${s.front} 100%)`,
+    transition: 'transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s ease, background 0.4s ease',
+    // Glassmorphism core styling
+    background: `linear-gradient(135deg, ${s.top} 0%, ${s.front} 100%)`,
+    backdropFilter: 'blur(16px) saturate(120%)',
+    WebkitBackdropFilter: 'blur(16px) saturate(120%)',
     border: `1.5px solid ${s.border}`,
     borderRadius: `${borderRadius}px`,
     boxShadow: [
-      `inset 0 1px 0 ${lighting.primary.topHighlight}`,
-      `0 ${blockDepth}px 0 ${s.side}`,
-      `0 ${blockDepth + 2}px ${blockDepth + 6}px rgba(0,0,0,0.55)`,
-      s.glow !== 'transparent' ? `0 0 ${depthLevel + 8}px ${s.glow}` : '',
+      `inset 0 1px 1px rgba(255, 255, 255, 0.25)`, // Inner top highlight
+      `inset 0 -1px 1px rgba(0, 0, 0, 0.2)`, // Inner bottom shadow
+      `0 ${blockDepth}px 0 ${s.side}`, // 3D Extrusion
+      `0 ${blockDepth + 4}px ${blockDepth + 12}px rgba(0,0,0,0.5)`, // Drop shadow
+      s.glow !== 'transparent' ? `0 0 ${depthLevel + 15}px ${s.glow}` : '', // Outer glow
     ].filter(Boolean).join(', '),
     color: s.text,
     display: 'flex' as const,
@@ -203,5 +206,6 @@ export function block3dStyle(
     justifyContent: 'center' as const,
     fontWeight: 700,
     fontVariantNumeric: 'tabular-nums' as const,
+    textShadow: '0 2px 4px rgba(0,0,0,0.4)', // Crisp text on glass
   }
 }

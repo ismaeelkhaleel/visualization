@@ -15,7 +15,8 @@ export async function generateVideo(
   steps: VisualizationStep[],
   updateProgress: (msg: string) => void,
   audioEnabled: boolean = true,
-  format: 'webm' | 'mp4' = 'webm'
+  format: 'webm' | 'mp4' = 'webm',
+  abortSignal?: AbortSignal
 ): Promise<Blob> {
     const container = document.createElement('div')
   container.style.position = 'fixed'
@@ -57,7 +58,7 @@ export async function generateVideo(
 
     // @ts-ignore
     const videoConfig: any = {
-      codec: isMp4 ? 'avc1.640028' : 'vp09.00.10.08',
+      codec: isMp4 ? 'avc1.42E01F' : 'vp09.00.10.08',
       width: 720,
       height: 1280,
       bitrate: 7_000_000,
@@ -127,13 +128,14 @@ export async function generateVideo(
 
     for (let s = 0; s < steps.length; s++) {
       updateProgress(`Generating Video... Step ${s + 1} of ${steps.length}`)
+      console.log(`[VideoGenerator] Started rendering Step ${s + 1}/${steps.length}`)
       
       const step = steps[s]
       
       await new Promise<void>(resolve => {
         root.render(
           React.createElement(VideoRenderer, {
-                        step,
+            step,
             
             code: problem.visualization.code,
             algorithm: problem.id,
@@ -148,10 +150,16 @@ export async function generateVideo(
 
       // pre-warm html-to-image (loads fonts, styles)
       if (s === 0) {
+        console.log('[VideoGenerator] Pre-warming html-to-image cache on Step 1...')
         await toCanvas(domNode, { width, height, pixelRatio: 2 })
+        console.log('[VideoGenerator] Pre-warming completed.')
       }
 
+      console.log(`[VideoGenerator] Generating ${framesPerStep} frames for Step ${s + 1}...`)
       for (let f = 0; f < framesPerStep; f++) {
+        if (abortSignal?.aborted) throw new Error('Cancelled by user')
+        
+        if (f % 10 === 0) console.log(`[VideoGenerator] Encoded frame ${f}/${framesPerStep} (Step ${s + 1})`)
         const time = s * stepDuration + (f / fps)
         gsap.globalTimeline.seek(time)
 
@@ -166,6 +174,16 @@ export async function generateVideo(
         const frame = new globalThis.VideoFrame(highResCanvas, { timestamp: time * 1_000_000 })
         encoder.encode(frame, { keyFrame: f % 30 === 0 })
         frame.close()
+        
+        // Wait if the encoder queue gets too large so we don't choke memory
+        while (encoder.encodeQueueSize > 5) {
+          await new Promise(r => setTimeout(r, 10))
+        }
+
+        // Yield the main thread occasionally to keep UI responsive
+        if (f % 5 === 0) {
+          await new Promise(r => setTimeout(r, 0))
+        }
       }
 
       if (audioEnabled && audioBuffer && audioEncoder) {
@@ -193,16 +211,27 @@ export async function generateVideo(
     }
 
     updateProgress('Encoding WebM...')
+    console.log('Flushing video encoder...')
     await encoder.flush()
+    console.log('Video encoder flushed.')
     if (audioEncoder) {
+      console.log('Flushing audio encoder...')
       await audioEncoder.flush()
+      console.log('Audio encoder flushed.')
     }
+    console.log('Finalizing muxer...')
     muxer.finalize()
+    console.log('Muxer finalized.')
 
     const buffer = (muxer.target as any).buffer
+    console.log('Video generation complete. Buffer size:', buffer.byteLength)
     return new Blob([buffer], { type: isMp4 ? 'video/mp4' : 'video/webm' })
     
+  } catch (error) {
+    console.error('Error during video generation:', error)
+    throw error
   } finally {
+    console.log('Cleaning up rendering environment...')
     gsap.globalTimeline.play()
     root.unmount()
     document.body.removeChild(container)

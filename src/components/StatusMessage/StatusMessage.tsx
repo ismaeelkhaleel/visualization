@@ -20,15 +20,18 @@ function StatusMessage({ message }: StatusMessageProps) {
 
     gsap.fromTo(
       messageRef.current,
-      { opacity: 0, y: 6, scale: 0.97 },
-      { opacity: 1, y: 0, scale: 1, duration: 0.2, ease: 'power2.out' },
+      { opacity: 0.5, y: -4, scale: 1.05 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.25, ease: 'back.out(2)' },
     )
   }, [message])
 
   return (
     <div
+      aria-live="polite"
+      aria-atomic="true"
       style={{
-        width: '280px',
+        width: '100%',
+        maxWidth: '320px',
         minHeight: '32px',
         display: 'flex',
         alignItems: 'center',

@@ -6,13 +6,15 @@ type Scene3DProps = {
   height?: number
 }
 
-export const Scene3D: React.FC<Scene3DProps> = ({ children, width = 312, height = 192 }) => {
+export const Scene3D: React.FC<Scene3DProps> = ({ children, width = 328, height = 304 }) => {
   return (
     <div style={{
       width: `${width}px`,
       height: `${height}px`,
-      perspective: '800px',
-      perspectiveOrigin: '50% -50%', // Camera looks down significantly to reveal depth
+      // Perspective from slightly above and slightly to the LEFT
+      // This reveals the RIGHT side face and TOP face of blocks (matching reference images)
+      perspective: '600px',
+      perspectiveOrigin: '45% 35%',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',

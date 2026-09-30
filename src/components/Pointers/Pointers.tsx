@@ -10,9 +10,11 @@ export type PointerConfig = {
 
 type PointersProps = {
   pointers: PointerConfig[]
+  speed?: number
+  isJump?: boolean
 }
 
-function Pointers({ pointers }: PointersProps) {
+function Pointers({ pointers, speed = 1, isJump = false }: PointersProps) {
   const grouped: Record<string, PointerConfig[]> = {}
   pointers.forEach(p => {
     const key = `${p.x}-${p.y}-${p.position}`
@@ -32,6 +34,8 @@ function Pointers({ pointers }: PointersProps) {
               targetY={pointer.y}
               targetZ={pointer.z}
               position={pointer.position}
+              speed={speed}
+              isJump={isJump}
             />
           )
         })

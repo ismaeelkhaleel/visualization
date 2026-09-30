@@ -18,6 +18,11 @@ export function maxSubArray(nums: number[]): VisualizationStep[] {
     return hl
   }
 
+  const getMetrics = () => [
+    { label: 'current_sum', value: currentSum },
+    { label: 'max_sum', value: maxSum }
+  ]
+
   steps.push({ 
     codeLine: 2, 
     message: `Init sum to ${arr[0].value}`, 
@@ -26,9 +31,9 @@ export function maxSubArray(nums: number[]): VisualizationStep[] {
       type: 'array', 
       data: { 
         values: [...arr], 
-        highlights: [0], 
-        action: `CURRENT SUM: ${currentSum} | BEST SUM: ${maxSum}`,
-        pointers: [{label:'i',index:0,position:'top'}] 
+        highlights: [0],
+        metrics: getMetrics(),
+        pointers: [{label:'num',index:0,position:'bottom'}] 
       } 
     }] 
   })
@@ -42,9 +47,9 @@ export function maxSubArray(nums: number[]): VisualizationStep[] {
         type: 'array', 
         data: { 
           values: [...arr], 
-          highlights: buildHighlights(currentStart, i - 1), 
-          action: `CURRENT SUM: ${currentSum} | BEST SUM: ${maxSum}`,
-          pointers: [{label:'i',index:i,position:'top'}] 
+          highlights: buildHighlights(currentStart, i - 1),
+          metrics: getMetrics(),
+          pointers: [{label:'num',index:i,position:'bottom'}] 
         } 
       }] 
     })
@@ -61,8 +66,8 @@ export function maxSubArray(nums: number[]): VisualizationStep[] {
           data: { 
             values: [...arr], 
             highlights: [i], 
-            action: `CURRENT SUM: ${currentSum} | BEST SUM: ${maxSum}`,
-            pointers: [{label:'i',index:i,position:'top'}] 
+            metrics: getMetrics(),
+            pointers: [{label:'num',index:i,position:'bottom'}] 
           } 
         }] 
       })
@@ -77,8 +82,8 @@ export function maxSubArray(nums: number[]): VisualizationStep[] {
           data: { 
             values: [...arr], 
             highlights: buildHighlights(currentStart, i), 
-            action: `CURRENT SUM: ${currentSum} | BEST SUM: ${maxSum}`,
-            pointers: [{label:'i',index:i,position:'top'}] 
+            metrics: getMetrics(),
+            pointers: [{label:'num',index:i,position:'bottom'}] 
           } 
         }] 
       })
@@ -97,8 +102,9 @@ export function maxSubArray(nums: number[]): VisualizationStep[] {
           data: { 
             values: [...arr], 
             highlights: buildHighlights(bestStart, bestEnd), 
-            action: `NEW BEST: ${maxSum}`,
-            pointers: [{label:'i',index:i,position:'top'}] 
+            metrics: getMetrics(),
+            action: 'NEW BEST',
+            pointers: [{label:'num',index:i,position:'bottom'}] 
           } 
         }] 
       })
@@ -114,7 +120,8 @@ export function maxSubArray(nums: number[]): VisualizationStep[] {
       data: { 
         values: [...arr],
         highlights: buildHighlights(bestStart, bestEnd),
-        action: `MAX SUM: ${maxSum}`
+        metrics: getMetrics(),
+        action: 'MAX SUM'
       } 
     }] 
   })

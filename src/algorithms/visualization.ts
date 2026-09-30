@@ -1,13 +1,28 @@
 import { moveZeroesCode } from '../data/moveZeroesCode'
 import { twoSumCode } from '../data/twoSumCode'
-import { binarySearchCode } from '../data/binarySearchCode'
 import { maxProfitCode } from '../data/maxProfitCode'
-import { validParenthesesCode } from '../data/validParenthesesCode'
 import { containsDuplicateCode } from '../data/containsDuplicateCode'
 import { maxSubArrayCode } from '../data/maxSubArrayCode'
 import { mergeSortedArrayCode } from '../data/mergeSortedArrayCode'
 import { reverseStringCode } from '../data/reverseStringCode'
-import { evaluateRPNCode } from '../data/evaluateRPNCode'
+import { validAnagramCode } from '../data/validAnagramCode'
+import { validPalindromeCode } from '../data/validPalindromeCode'
+import {
+    intersectionCode,
+    intersectionIICode,
+    majorityElementCode,
+    mergeIntervalsCode,
+    missingNumberCode,
+    pivotIndexCode,
+    productExceptSelfCode,
+    removeDuplicatesCode,
+    rotateArrayCode,
+    runningSumCode,
+    sortedSquaresCode,
+    sortColorsCode,
+    subarraySumCode,
+    threeSumCode,
+} from '../data/arrayProblemCodes'
 
 export type VisualizationConfig = {
     explanation?: string;
@@ -33,28 +48,12 @@ export const twoSumVisualization: VisualizationConfig = {
     code: twoSumCode,
 }
 
-export const binarySearchVisualization: VisualizationConfig = {
-    explanation: 'Repeatedly halve the search interval to find the target.',
-    timeComplexity: 'O(log n)',
-    spaceComplexity: 'O(1)',
-    title: 'BINARY SEARCH',
-    code: binarySearchCode,
-}
-
 export const maxProfitVisualization: VisualizationConfig = {
     explanation: 'Track the minimum price to find the maximum profit.',
     timeComplexity: 'O(n)',
     spaceComplexity: 'O(1)',
     title: 'BEST TIME TO BUY & SELL',
     code: maxProfitCode,
-}
-
-export const validParenthesesVisualization: VisualizationConfig = {
-    explanation: 'Use a stack to ensure brackets are closed in the correct order.',
-    timeComplexity: 'O(n)',
-    spaceComplexity: 'O(n)',
-    title: 'VALID PARENTHESES',
-    code: validParenthesesCode,
 }
 
 export const containsDuplicateVisualization: VisualizationConfig = {
@@ -89,100 +88,126 @@ export const reverseStringVisualization: VisualizationConfig = {
     code: reverseStringCode,
 }
 
-export const evaluateRPNVisualization: VisualizationConfig = {
-    explanation: 'Use a stack to evaluate the postfix expression.',
-    timeComplexity: 'O(n)',
-    spaceComplexity: 'O(n)',
-    title: 'EVALUATE RPN',
-    code: evaluateRPNCode,
-}
-
-import { reverseLinkedListCode } from '../data/reverseLinkedListCode'
-
-export const reverseLinkedListVisualization: VisualizationConfig = {
-    explanation: 'Walk the list and flip every next pointer backward.',
+export const productExceptSelfVisualization: VisualizationConfig = {
+    explanation: 'Build the result from left prefix products and right suffix products.',
     timeComplexity: 'O(n)',
     spaceComplexity: 'O(1)',
-    title: 'REVERSE LINKED LIST',
-    code: reverseLinkedListCode,
+    title: 'PRODUCT EXCEPT SELF',
+    code: productExceptSelfCode,
 }
 
-import { binaryTreeLevelOrderCode } from '../data/binaryTreeLevelOrderCode'
+export const removeDuplicatesVisualization: VisualizationConfig = {
+    explanation: 'Compact unique values into the front of a sorted array.',
+    timeComplexity: 'O(n)',
+    spaceComplexity: 'O(1)',
+    title: 'REMOVE DUPLICATES',
+    code: removeDuplicatesCode,
+}
 
-export const binaryTreeLevelOrderVisualization: VisualizationConfig = {
-    explanation: 'Traverse the tree level by level using a queue.',
+export const rotateArrayVisualization: VisualizationConfig = {
+    explanation: 'Rotate in place with three reversals.',
+    timeComplexity: 'O(n)',
+    spaceComplexity: 'O(1)',
+    title: 'ROTATE ARRAY',
+    code: rotateArrayCode,
+}
+
+export const sortColorsVisualization: VisualizationConfig = {
+    explanation: 'Use low, mid, and high pointers to partition 0s, 1s, and 2s.',
+    timeComplexity: 'O(n)',
+    spaceComplexity: 'O(1)',
+    title: 'SORT COLORS',
+    code: sortColorsCode,
+}
+
+export const majorityElementVisualization: VisualizationConfig = {
+    explanation: 'Cancel votes until the majority candidate remains.',
+    timeComplexity: 'O(n)',
+    spaceComplexity: 'O(1)',
+    title: 'MAJORITY ELEMENT',
+    code: majorityElementCode,
+}
+
+export const missingNumberVisualization: VisualizationConfig = {
+    explanation: 'XOR every index and value; equal pairs cancel out.',
+    timeComplexity: 'O(n)',
+    spaceComplexity: 'O(1)',
+    title: 'MISSING NUMBER',
+    code: missingNumberCode,
+}
+
+export const pivotIndexVisualization: VisualizationConfig = {
+    explanation: 'Find the index where left sum equals right sum.',
+    timeComplexity: 'O(n)',
+    spaceComplexity: 'O(1)',
+    title: 'PIVOT INDEX',
+    code: pivotIndexCode,
+}
+
+export const runningSumVisualization: VisualizationConfig = {
+    explanation: 'Accumulate each value into the running total.',
+    timeComplexity: 'O(n)',
+    spaceComplexity: 'O(1)',
+    title: 'RUNNING SUM',
+    code: runningSumCode,
+}
+
+export const sortedSquaresVisualization: VisualizationConfig = {
+    explanation: 'Compare absolute values at both ends and fill from the back.',
     timeComplexity: 'O(n)',
     spaceComplexity: 'O(n)',
-    title: 'BINARY TREE LEVEL ORDER TRAVERSAL',
-    code: binaryTreeLevelOrderCode,
+    title: 'SORTED SQUARES',
+    code: sortedSquaresCode,
 }
 
-import { graphBFSCode } from '../data/graphBFSCode'
-
-export const graphBFSVisualization: VisualizationConfig = {
-    explanation: 'Explore the graph level by level from the source node.',
-    timeComplexity: 'O(V+E)',
-    spaceComplexity: 'O(V)',
-    title: 'GRAPH BFS',
-    code: graphBFSCode,
+export const intersectionVisualization: VisualizationConfig = {
+    explanation: 'Use a set to keep only values present in both arrays.',
+    timeComplexity: 'O(n+m)',
+    spaceComplexity: 'O(n)',
+    title: 'INTERSECTION',
+    code: intersectionCode,
 }
 
-import { validAnagramCode } from '../data/validAnagramCode'
+export const intersectionIIVisualization: VisualizationConfig = {
+    explanation: 'Count values from one array and consume matches from the other.',
+    timeComplexity: 'O(n+m)',
+    spaceComplexity: 'O(n)',
+    title: 'INTERSECTION II',
+    code: intersectionIICode,
+}
+
+export const mergeIntervalsVisualization: VisualizationConfig = {
+    explanation: 'Sort intervals, then merge overlapping ranges.',
+    timeComplexity: 'O(n log n)',
+    spaceComplexity: 'O(n)',
+    title: 'MERGE INTERVALS',
+    code: mergeIntervalsCode,
+}
+
+export const subarraySumVisualization: VisualizationConfig = {
+    explanation: 'Track prefix sums and count earlier sums that complete the target.',
+    timeComplexity: 'O(n)',
+    spaceComplexity: 'O(n)',
+    title: 'SUBARRAY SUM K',
+    code: subarraySumCode,
+}
+
+export const threeSumVisualization: VisualizationConfig = {
+    explanation: 'Fix one value, then use two pointers to find pairs that sum to zero.',
+    timeComplexity: 'O(n^2)',
+    spaceComplexity: 'O(1)',
+    title: 'THREE SUM',
+    code: threeSumCode,
+}
+
 export const validAnagramVisualization: VisualizationConfig = {
     explanation: 'Count character frequencies to check if strings are anagrams.',
     timeComplexity: 'O(n)',
-    spaceComplexity: 'O(1)', title: 'VALID ANAGRAM', code: validAnagramCode }
+    spaceComplexity: 'O(1)', title: 'VALID ANAGRAM', code: validAnagramCode 
+}
 
-import { validPalindromeCode } from '../data/validPalindromeCode'
 export const validPalindromeVisualization: VisualizationConfig = {
     explanation: 'Check if the string reads the same forwards and backwards.',
     timeComplexity: 'O(n)',
-    spaceComplexity: 'O(1)', title: 'VALID PALINDROME', code: validPalindromeCode }
-
-import { mergeTwoSortedListsCode } from '../data/mergeTwoSortedListsCode'
-export const mergeTwoSortedListsVisualization: VisualizationConfig = {
-    explanation: 'Iterate through both lists and attach the smaller node to the merged list.',
-    timeComplexity: 'O(n+m)',
-    spaceComplexity: 'O(1)', title: 'MERGE TWO SORTED LISTS', code: mergeTwoSortedListsCode }
-
-import { maxDepthBinaryTreeCode } from '../data/maxDepthBinaryTreeCode'
-export const maxDepthBinaryTreeVisualization: VisualizationConfig = {
-    explanation: 'Find the longest path from the root node down to the farthest leaf node.',
-    timeComplexity: 'O(n)',
-    spaceComplexity: 'O(n)', title: 'MAX DEPTH OF BINARY TREE', code: maxDepthBinaryTreeCode }
-
-import { invertBinaryTreeCode } from '../data/invertBinaryTreeCode'
-export const invertBinaryTreeVisualization: VisualizationConfig = {
-    explanation: 'Swap the left and right children of all nodes in the tree.',
-    timeComplexity: 'O(n)',
-    spaceComplexity: 'O(n)', title: 'INVERT BINARY TREE', code: invertBinaryTreeCode }
-
-import { linkedListCycleCode } from '../data/linkedListCycleCode'
-export const linkedListCycleVisualization: VisualizationConfig = {
-    explanation: 'Use a slow and fast pointer to detect if the list has a cycle.',
-    timeComplexity: 'O(n)',
-    spaceComplexity: 'O(1)', title: 'LINKED LIST CYCLE', code: linkedListCycleCode }
-
-import { minStackCode } from '../data/minStackCode'
-export const minStackVisualization: VisualizationConfig = {
-    explanation: 'Maintain a stack that supports push, pop, top, and retrieving the minimum element in constant time.',
-    timeComplexity: 'O(1)',
-    spaceComplexity: 'O(n)', title: 'MIN STACK', code: minStackCode }
-
-import { dailyTemperaturesCode } from '../data/dailyTemperaturesCode'
-export const dailyTemperaturesVisualization: VisualizationConfig = {
-    explanation: 'Use a monotonic stack to find the next warmer day.',
-    timeComplexity: 'O(n)',
-    spaceComplexity: 'O(n)', title: 'DAILY TEMPERATURES', code: dailyTemperaturesCode }
-
-import { numberOfIslandsCode } from '../data/numberOfIslandsCode'
-export const numberOfIslandsVisualization: VisualizationConfig = {
-    explanation: 'Use DFS/BFS to traverse and mark connected lands.',
-    timeComplexity: 'O(m*n)',
-    spaceComplexity: 'O(m*n)', title: 'NUMBER OF ISLANDS', code: numberOfIslandsCode }
-
-import { dfsCode } from '../data/dfsCode'
-export const dfsVisualization: VisualizationConfig = {
-    explanation: 'Explore as far as possible along each branch before backtracking.',
-    timeComplexity: 'O(V+E)',
-    spaceComplexity: 'O(V)', title: 'DFS', code: dfsCode }
+    spaceComplexity: 'O(1)', title: 'VALID PALINDROME', code: validPalindromeCode 
+}

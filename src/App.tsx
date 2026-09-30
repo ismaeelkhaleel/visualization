@@ -2,12 +2,10 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import VisualizationRenderer from './components/VisualizationRenderer/VisualizationRenderer'
 import CodePanel from './components/CodePanel/CodePanel'
-import StatusMessage from './components/StatusMessage/StatusMessage'
 import { generateVideo } from "./video/videoGenerator"
 import Controls from './components/Controls/Controls'
 
 import { problems } from './data/problems'
-import { getDailyProblem } from './data/dailyProblem'
 import { theme } from './theme'
 
 type AlgorithmName = (typeof problems)[number]['id']
@@ -16,14 +14,18 @@ type AlgorithmName = (typeof problems)[number]['id']
 function App() {
 
   const [currentStep, setCurrentStep] = useState(0)
+  const prevStepRef = useRef(0)
+  const isJump = Math.abs(currentStep - prevStepRef.current) > 1 || (currentStep === 0 && prevStepRef.current !== 0)
+
+  useEffect(() => {
+    prevStepRef.current = currentStep
+  }, [currentStep])
   const [isPlaying, setIsPlaying] = useState(false)
   const [speed, setSpeed] = useState(1)
-  const [algorithm, setAlgorithm] = useState<AlgorithmName>(() => getDailyProblem(problems).id as AlgorithmName)
+  const [algorithm, setAlgorithm] = useState<AlgorithmName>('twoSum' as AlgorithmName)
   
   const currentProblem = problems.find((problem) => problem.id === algorithm)!
-  const dailyProblem = getDailyProblem(problems)
-  const [selectedCategory, setSelectedCategory] = useState<string>(() => dailyProblem.category)
-  const isDaily = algorithm === dailyProblem.id
+  const [selectedCategory, setSelectedCategory] = useState<string>('Arrays')
 
   const [inputValuesText, setInputValuesText] = useState<Record<string, string>>(() => {
     const defaultTexts: Record<string, string> = {}
@@ -112,6 +114,14 @@ function App() {
   const handleReset = () => {
     setIsPlaying(false)
     setCurrentStep(0)
+  }
+
+  const handleNext = () => {
+    setCurrentStep((prev) => Math.min(prev + 1, currentSteps.length - 1))
+  }
+
+  const handlePrev = () => {
+    setCurrentStep((prev) => Math.max(prev - 1, 0))
   }
 
   const handleGenerate = () => {
@@ -320,14 +330,14 @@ function App() {
           </div>
           <div
             style={{
-              color: isDaily ? '#10b981' : '#888',
+              color: '#888',
               fontSize: '10px',
               fontWeight: 600,
               letterSpacing: '0.5px',
               textTransform: 'uppercase',
             }}
           >
-            {isDaily ? "Today's Problem" : "Practice Problem"}
+            Practice Problem
           </div>
         </div>
 
@@ -413,6 +423,10 @@ function App() {
           onReset={handleReset}
           onSpeedChange={setSpeed}
           disabled={isGenerating}
+          currentStep={currentStep}
+          totalSteps={currentSteps.length}
+          onStepForward={handleNext}
+          onStepBackward={handlePrev}
         />
         
         <div style={{ marginTop: '10px' }}>
@@ -494,7 +508,7 @@ function App() {
             height: '640px',
             flexShrink: 0,
             position: 'relative',
-            background: `radial-gradient(ellipse at 50% 40%, #0c0c10 0%, ${theme.colors.videoBackground} 70%)`,
+            background: '#000000',
             border: `1px solid ${theme.colors.panelBorder}`,
             borderRadius: '14px',
             boxShadow: '0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 80px rgba(0,0,0,0.3)',
@@ -540,37 +554,22 @@ function App() {
                 width: '100%',
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'center', // This centers the Array vertically inside the 50% area
-                overflow: 'hidden',
+                alignItems: 'flex-start',
                 flexShrink: 0,
+                paddingTop: '4px',
               }}
             >
-              <VisualizationRenderer step={step} visualizationKey={algorithm} viewportWidth={328} viewportHeight={304} isComplete={currentStep === currentSteps.length - 1} />
+              <VisualizationRenderer step={step} visualizationKey={algorithm} viewportWidth={328} viewportHeight={250} isComplete={currentStep === currentSteps.length - 1} speed={speed} isJump={isJump} />
             </div>
 
-            {/* 3. STATUS ZONE - 10% */}
+            {/* 4. CODEPANEL ZONE - 40% */}
             <div
               style={{
-                height: '10%',
+                height: '40%',
                 width: '100%',
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'center',
-                overflow: 'hidden',
-                flexShrink: 0,
-              }}
-            >
-              <StatusMessage message={step.message} />
-            </div>
-
-            {/* 4. CODEPANEL ZONE - 30% */}
-            <div
-              style={{
-                height: '30%',
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
+                alignItems: 'stretch',
                 overflow: 'hidden',
                 flexShrink: 0,
               }}
@@ -620,7 +619,7 @@ function App() {
               letterSpacing: '0.5px',
             }}
           >
-            Step {currentStep + 1} / {currentSteps.length}
+            {/* Step text removed */}
           </div>
         </div>
       </div>
